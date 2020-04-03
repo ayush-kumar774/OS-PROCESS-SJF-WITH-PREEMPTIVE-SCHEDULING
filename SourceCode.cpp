@@ -26,7 +26,7 @@ void FindWaitingTime (Processes process [], int number, int waiting_Time [])
     for (int Time = 0; Time < number; Time++)
      remainingTime[Time] = process[Time].burstTime;
     int complete = 0, t = 0, minm = 999999999; // we are assigning huge value to minm so we could find the smallest number easily.
-    int short = 0, finishTime;
+    int small = 0, finishTime;
     bool checker = false;
     while (complete != number)
     {
@@ -35,7 +35,7 @@ void FindWaitingTime (Processes process [], int number, int waiting_Time [])
             if ((process[time].arrivalTime <= t) && (remainingTime[time] < minm) && remainingTime[time] > 0)
             {
                 minm = remainingTime[time];
-                short = time;
+                small = time;
                 checker = true;
             }
         }
@@ -45,19 +45,19 @@ void FindWaitingTime (Processes process [], int number, int waiting_Time [])
             continue;
         }   
         // decrementing the remaining time
-        remainingTime[short]--;
-        minm = remainingTime[short];
+        remainingTime[small]--;
+        minm = remainingTime[small];
         if (minm == 0)
         minm = 99999999; // we are assigning huge value to minm so we could find the smallest number easily.
-        if (remainingTime[short] == 0)
+        if (remainingTime[small] == 0)
         {
             complete++;
             checker = false;
             finishTime = t + 1;
             // Calculating waiting time
-            waiting_Time[short] = finishTime - process[short].burstTime - process[short].arrivalTime;
-            if (waiting_Time[short] < 0)
-                waiting_Time[short] = 0;
+            waiting_Time[small] = finishTime - process[small].burstTime - process[small].arrivalTime;
+            if (waiting_Time[small] < 0)
+                waiting_Time[small] = 0;
         }
         t++;
     }
