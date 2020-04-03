@@ -1,4 +1,3 @@
-// Program for the given question. It is SJF(Shortest Job First With PREEMPTION) process scheduling.
 #include <iostream>
 #include <unistd.h>
 using namespace std;
@@ -10,22 +9,25 @@ struct Processes
     int arrivalTime; // Arrival Time
 } process[100];
 
-void TurnAroundTime(Processes process[], int number, int waiting_Time[], int turn_around_time[]) 
+
+void TurnAroundTime (Processes process[], int number, int waiting_Time[], int turn_around_time[]) 
 {
     for (int time = 0; time < number; time++)
     turn_around_time[time] = process[time].burstTime + waiting_Time[time];
 }
 
+
 //This function will find waiting time of all process
 
-void FindWaitingTime(Processes process[], int number, int waiting_Time[]) 
+
+void FindWaitingTime (Processes process [], int number, int waiting_Time []) 
 {
     int remainingTime[number];
     for (int Time = 0; Time < number; Time++)
      remainingTime[Time] = process[Time].burstTime;
     int complete = 0, t = 0, minm = 999999999; // we are assigning huge value to minm so we could find the smallest number easily.
-    int shortest = 0, finish_time;
-    bool check = false;
+    int short = 0, finishTime;
+    bool checker = false;
     while (complete != number)
     {
         for (int time = 0; time < number; time++)
@@ -33,47 +35,52 @@ void FindWaitingTime(Processes process[], int number, int waiting_Time[])
             if ((process[time].arrivalTime <= t) && (remainingTime[time] < minm) && remainingTime[time] > 0)
             {
                 minm = remainingTime[time];
-                shortest = time;
-                check = true;
+                short = time;
+                checker = true;
             }
         }
-        if (check == false)
+        if (checker == false)
         {
             t++;
             continue;
         }   
         // decrementing the remaining time
-        remainingTime[shortest]--;
-        minm = remainingTime[shortest];
+        remainingTime[short]--;
+        minm = remainingTime[short];
         if (minm == 0)
         minm = 99999999; // we are assigning huge value to minm so we could find the smallest number easily.
-        if (remainingTime[shortest] == 0)
+        if (remainingTime[short] == 0)
         {
             complete++;
-            check = false;
-            finish_time = t + 1;
+            checker = false;
+            finishTime = t + 1;
             // Calculating waiting time
-            waiting_Time[shortest] = finish_time - process[shortest].burstTime - process[shortest].arrivalTime;
-            if (waiting_Time[shortest] < 0)
-                waiting_Time[shortest] = 0;
+            waiting_Time[short] = finishTime - process[short].burstTime - process[short].arrivalTime;
+            if (waiting_Time[short] < 0)
+                waiting_Time[short] = 0;
         }
         t++;
     }
 }
 
+
 // calculate average time and print the data
-void findavgTime(Processes process[], int number) 
+void findavgTime (Processes process [], int number) 
 {
-    int waiting_time[number], turn_Around_time[number], total_waiting_time = 0,total_turn_Around_time = 0;
+    int waiting_time[number], turn_Around_time[number], total_waiting_time = 0, total_turn_Around_time = 0;
+
 
     // calling FindWaitingTime function 
 
-    FindWaitingTime(process, number, waiting_time);
 
-    // calling TurnAroundTime function to find turn around time for all processes
-    TurnAroundTime(process, number, waiting_time, turn_Around_time);
+    FindWaitingTime (process, number, waiting_time);
 
-    // It will print all the details .
+
+    // calling TurnAroundTime function to find turnaround time for all processes
+    TurnAroundTime (process, number, waiting_time, turn_Around_time);
+
+
+    // It will print all the details.
     cout << "Processes " << " Burst time " << " Waiting time " << " Turn around time" << " Arriving Time \n" ;
     for (int i = 0; i < number; i++)
     {
@@ -85,12 +92,13 @@ void findavgTime(Processes process[], int number)
     cout << "\nAverage turn around time = " << (float)total_turn_Around_time / (float)number;
 }
 
-int main()
+
+int main ()
 {
-    int Process_number ;
+    int Process_number;
     cout << "Enter number of processes:- ";
     cin >> Process_number ; // It will be used to create process structures.
-    for(int i = 0; i < Process_number; i++)
+    for (int i = 0; i < Process_number; i++)
     {
         process[i].process_id = i+1 ;
         cout << "Enter Arrival Time for process " << process[i].process_id << " :- " ;
